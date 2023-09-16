@@ -86,7 +86,11 @@ public class FileRotationLogger: FileLoggerable {
                 let fileExtension = fileURL.pathExtension
                 currentFileURL = currentFileURL.deletingPathExtension().appendingPathExtension("1").appendingPathExtension(fileExtension)
             case .date_uuid:
-                currentFileURL = currentFileURL.appendingPathExtension(dateFormatter(Date(), withFormatter: self.dateFormat) + "_" + UUID().uuidString.lowercased())
+                let fileExtension = fileURL.pathExtension
+                var fileName = fileURL.lastPathComponent
+                fileName = fileName.replacingOccurrences(of: ".\(fileExtension)", with: "")
+                fileName = fileName + dateFormatter(Date(), withFormatter: self.dateFormat) + "_" + UUID().uuidString.lowercased()
+                currentFileURL = URL(string: fileURL.deletingLastPathComponent().absoluteString + "/" + fileName)!
             }
         }
 
