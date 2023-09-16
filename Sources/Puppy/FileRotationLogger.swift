@@ -90,7 +90,7 @@ public class FileRotationLogger: FileLoggerable {
                 var fileName = fileURL.lastPathComponent
                 fileName = fileName.replacingOccurrences(of: ".\(fileExtension)", with: "")
                 fileName = fileName + "_" + dateFormatter(Date(), withFormatter: self.dateFormat) + "_" + UUID().uuidString.lowercased()
-                currentFileURL = URL(string: fileURL.deletingLastPathComponent().absoluteString + "/" + fileName + fileExtension)!
+                currentFileURL = URL(string: fileURL.deletingLastPathComponent().absoluteString + "/" + fileName + "." + fileExtension)!
             }
         }
 
