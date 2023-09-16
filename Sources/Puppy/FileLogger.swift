@@ -1,4 +1,4 @@
-@preconcurrency import Dispatch
+import Dispatch
 import Foundation
 
 public struct FileLogger: FileLoggerable {
@@ -28,10 +28,10 @@ public struct FileLogger: FileLoggerable {
 
         try validateFileURL(fileURL)
         try validateFilePermission(fileURL, filePermission: filePermission)
-        try openFile()
+        try openFile(fileURL)
     }
 
     public func log(_ level: LogLevel, string: String) {
-        append(level, string: string, flushMode: flushMode, writeMode: writeMode)
+        append(level, fileURL: fileURL, string: string, flushMode: flushMode, writeMode: writeMode)
     }
 }

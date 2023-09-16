@@ -16,7 +16,13 @@ final class FileRotationLoggerTests: XCTestCase {
         let rotationDirectoryURL = URL(fileURLWithPath: "./rotation-numbering").absoluteURL
         let rotationConfig: RotationConfig = .init(suffixExtension: .numbering, maxFileSize: 512, maxArchivedFilesCount: 4) // // default case
         let delegate: FileRotationDelegate = .init()
-        let fileRotation: FileRotationLogger = try .init("com.example.yourapp.filerotationlogger.numbering", fileURL: rotationFileURL, rotationConfig: rotationConfig, delegate: delegate)
+        
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "yyyyMMdd'T'HHmmssZZZZZ"
+        dateFormat.timeZone = TimeZone(identifier: "UTC")
+        dateFormat.locale = Locale(identifier: "en_US_POSIX")
+        
+        let fileRotation: FileRotationLogger = try .init("com.example.yourapp.filerotationlogger.numbering", fileURL: rotationFileURL, dateFormatter: dateFormat, rotationConfig: rotationConfig, delegate: delegate)
 
         var log = Puppy()
         log.add(fileRotation)
@@ -34,7 +40,13 @@ final class FileRotationLoggerTests: XCTestCase {
         let rotationDirectoryURL = URL(fileURLWithPath: "./rotation-date_uuid").absoluteURL
         let rotationConfig: RotationConfig = .init(suffixExtension: .date_uuid, maxFileSize: 256, maxArchivedFilesCount: 2)
         let delegate: FileRotationDelegate = .init()
-        let fileRotation: FileRotationLogger = try .init("com.example.yourapp.filerotationlogger.date_uuid", fileURL: rotationFileURL, rotationConfig: rotationConfig, delegate: delegate)
+        
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "yyyyMMdd'T'HHmmssZZZZZ"
+        dateFormat.timeZone = TimeZone(identifier: "UTC")
+        dateFormat.locale = Locale(identifier: "en_US_POSIX")
+        
+        let fileRotation: FileRotationLogger = try .init("com.example.yourapp.filerotationlogger.date_uuid", fileURL: rotationFileURL, dateFormatter: dateFormat, rotationConfig: rotationConfig, delegate: delegate)
 
         var log = Puppy()
         log.add(fileRotation)
@@ -51,7 +63,13 @@ final class FileRotationLoggerTests: XCTestCase {
         let rotationFileURL = URL(fileURLWithPath: "./rotation-error-catch/rotation-error-catch.log").absoluteURL
         let rotationDirectoryURL = URL(fileURLWithPath: "./rotation-error-catch").absoluteURL
         let rotationConfig: RotationConfig = .init()
-        let fileRotation: FileRotationLogger = try .init("com.example.yourapp.filerotationlogger.errorcatch", fileURL: rotationFileURL, rotationConfig: rotationConfig)
+        
+        let dateFormat = DateFormatter()
+        dateFormat.dateFormat = "yyyyMMdd'T'HHmmssZZZZZ"
+        dateFormat.timeZone = TimeZone(identifier: "UTC")
+        dateFormat.locale = Locale(identifier: "en_US_POSIX")
+        
+        let fileRotation: FileRotationLogger = try .init("com.example.yourapp.filerotationlogger.errorcatch", fileURL: rotationFileURL, dateFormatter: dateFormat, rotationConfig: rotationConfig)
 
         var log = Puppy()
         log.add(fileRotation)

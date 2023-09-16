@@ -96,8 +96,8 @@ extension FileLoggerable {
     }
     #endif // (compiler(>=5.5.2) && !os(Windows)) || compiler(>=5.7)
 
-    func openFile() throws {
-        let directoryURL = fileURL.deletingLastPathComponent()
+    func openFile(_ url: URL) throws {
+        let directoryURL = url.deletingLastPathComponent()
         do {
             try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
             puppyDebug("created directoryURL, directoryURL: \(directoryURL)")
@@ -105,15 +105,15 @@ extension FileLoggerable {
             throw FileError.creatingDirectoryFailed(at: directoryURL)
         }
 
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            let successful = FileManager.default.createFile(atPath: fileURL.path, contents: nil, attributes: [FileAttributeKey.posixPermissions: uintPermission])
+        if !FileManager.default.fileExists(atPath: url.path) {
+            let successful = FileManager.default.createFile(atPath: url.path, contents: nil, attributes: [FileAttributeKey.posixPermissions: uintPermission])
             if successful {
                 puppyDebug("succeeded in creating filePath")
             } else {
-                throw FileError.creatingFileFailed(at: fileURL)
+                throw FileError.creatingFileFailed(at: url)
             }
         } else {
-            puppyDebug("filePath exists, filePath: \(fileURL.path)")
+            puppyDebug("filePath exists, filePath: \(url.path)")
         }
 
         var handle: FileHandle!
@@ -122,7 +122,7 @@ extension FileLoggerable {
                 try? handle?.synchronize()
                 try? handle?.close()
             }
-            handle = try FileHandle(forWritingTo: fileURL)
+            handle = try FileHandle(forWritingTo: url)
         } catch {
             throw FileError.openingForWritingFailed(at: fileURL)
         }
@@ -143,7 +143,7 @@ extension FileLoggerable {
         }
     }
 
-    func append(_ level: LogLevel, string: String, flushMode: FlushMode = .always, writeMode: FileWritingErrorHandlingMode = .force) {
+    func append(_ level: LogLevel, fileURL: URL, string: String, flushMode: FlushMode = .always, writeMode: FileWritingErrorHandlingMode = .force) {
         var handle: FileHandle!
         do {
             defer {

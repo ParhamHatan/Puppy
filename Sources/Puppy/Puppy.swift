@@ -1,4 +1,4 @@
-@preconcurrency import Dispatch
+import Dispatch
 import Foundation
 #if canImport(Darwin)
 #elseif os(Linux)

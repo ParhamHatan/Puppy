@@ -1,5 +1,5 @@
 #if canImport(Darwin)
-@preconcurrency import Dispatch
+import Dispatch
 @preconcurrency import os
 import Foundation
 
