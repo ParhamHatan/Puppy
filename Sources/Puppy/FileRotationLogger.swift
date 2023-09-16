@@ -45,6 +45,10 @@ public class FileRotationLogger: FileLoggerable {
         rotateFiles()
     }
     
+    public func rotateManually() {
+        rotateFiles(ignoreSize: true)
+    }
+    
     private func getCurrentFile(_ fileURL: URL) -> URL {
         switch rotationConfig.fileRotateCreationStrategy {
         case .archive_old_files:
@@ -66,8 +70,10 @@ public class FileRotationLogger: FileLoggerable {
         #endif
     }
 
-    private func rotateFiles() {
-        guard let size = try? fileSize(currentFileURL), size > rotationConfig.maxFileSize else { return }
+    private func rotateFiles(ignoreSize: Bool = false) {
+        if (!ignoreSize) {
+            guard let size = try? fileSize(currentFileURL), size > rotationConfig.maxFileSize else { return }
+        }
         
         switch rotationConfig.fileRotateCreationStrategy {
         case .archive_old_files:
